@@ -3,6 +3,8 @@
 Для запуска необходимы установленный Redis, модули для Python: flask, PIL, request
 
 # Запуск:
+redis-server
+
 export FLASK_APP=serv.py
 
 flask run
