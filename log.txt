@@ -1,0 +1,13 @@
+DATE                      |ACTIVITY TYPE      |REQ ID |FILE NAME                |REQ IP    |WIDTH |HEIGHT |
+Thu Jun 18 20:48:56 2020  |CLIENT UPLOAD      |61     |testpic.png              |127.0.0.1 |10    |10     |
+Thu Jun 18 20:48:56 2020  |DONE               |61     |testpic.png              |-         |10    |10     |
+Thu Jun 18 20:48:56 2020  |CLIENT DOWNLOAD    |61     |testpic.png              |127.0.0.1 |
+Thu Jun 18 20:52:33 2020  |CLIENT UPLOAD      |62     |testpic.png              |127.0.0.1 |10    |10     |
+Thu Jun 18 20:52:33 2020  |DONE               |62     |testpic.png              |-         |10    |10     |
+Thu Jun 18 20:52:33 2020  |CLIENT DOWNLOAD    |62     |testpic.png              |127.0.0.1 |
+Thu Jun 18 20:53:18 2020  |CLIENT UPLOAD      |63     |testpic.png              |127.0.0.1 |10    |10     |
+Thu Jun 18 20:53:18 2020  |DONE               |63     |testpic.png              |-         |10    |10     |
+Thu Jun 18 20:53:18 2020  |CLIENT DOWNLOAD    |63     |testpic.png              |127.0.0.1 |
+Thu Jun 18 20:59:24 2020  |CLIENT UPLOAD      |64     |testpic.png              |127.0.0.1 |10    |10     |
+Thu Jun 18 20:59:24 2020  |DONE               |64     |testpic.png              |-         |10    |10     |
+Thu Jun 18 20:59:24 2020  |CLIENT DOWNLOAD    |64     |testpic.png              |127.0.0.1 |

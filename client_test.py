@@ -14,6 +14,9 @@ class Tests(unittest.TestCase):
     def test_resultid(self):
         response = requests.post('http://127.0.0.1:5000/results', data = {'id' : -4})
         self.assertEqual(response.text, 'Wrong id!', msg = "Wrong id checking")
+    def test_resultid(self):
+        response = requests.post('http://127.0.0.1:5000/results', data = {'id' : 'mda'})
+        self.assertEqual(response.text, 'Send integer please', msg = "Wrong converting to int")
     def test_result(self):
         with open('testpic.png', 'rb') as testpic:
             response = requests.post('http://127.0.0.1:5000/', data = {'width' : '10', 'height' : '10'}, files = {'file': testpic})

@@ -11,7 +11,7 @@ allowed_ext = set(['png', 'jpg'])
 app.config['UPLOAD_FOLDER'] = './pictures'
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 allowed_size = [str(i) for i in range(1,10000)]
-r = redis.StrictRedis(host = 'localhost', port = 6379, db = 0, decode_responses=True) # подключаемся к бд
+r = redis.StrictRedis(host = 'localhost', port = 6379, db = 0, decode_responses = True) # подключаемся к бд
 headwidth = [25, 18, 6, 24, 9, 5, 6]
 headdata = ['DATE', 'ACTIVITY TYPE', 'REQ ID', 'FILE NAME', 'REQ IP', 'WIDTH', 'HEIGHT']
 # файл для логирования
@@ -39,8 +39,9 @@ def allowed_file(filename):
 # формирование запроса на изменение изображения, добавление информации в бд
 def answer(file, r_w, r_h, id):
     filename = secure_filename(file.filename)
-    logging(time.ctime(), 'CLIENT UPLOAD', str(id), filename, request.remote_addr, request.values["width"], request.values["height"])
+    logging(time.ctime(), 'CLIENT UPLOAD', str(id), filename, request.remote_addr, r_w, r_h)
     r.hset(f"request:{id}", "orgn_pic", filename)
+    r.hset(f"request:{id}", "req_ip", request.remote_addr)
     r.hset(f"request:{id}","req_width", r_w)
     r.hset(f"request:{id}","req_height", r_h)
     r.hset(f"request:{id}","status", "in queue")
@@ -86,16 +87,19 @@ def index():
     </form>
     """
 
-# страница овтечающая о готовности
+# страница отdечающая о готовности
 @app.route("/results/", methods=['GET', 'POST'])
-def resultes():
+def results():
     if request.method == 'POST' and request.values["id"] != '':
-        id = int(request.values["id"])
+        try:
+            id = int(request.values["id"])
+        except ValueError:
+            return "Send integer please"
         if r.hget(f"request:{id}", "status") == "done":
             filename = r.hget(f"request:{id}", "orgn_pic")
             logging(time.ctime(), "CLIENT DOWNLOAD", str(id),  filename, request.remote_addr)
             return send_from_directory("./results", filename)
-        if r.hget(f"request:{id}", "status") == "processing":
+        elif r.hget(f"request:{id}", "status") == "processing":
             logging(time.ctime(), "CLIENT WAITING FOR",  str(id), '-', request.remote_addr)
             return "Your picture is stil in process"
         logging(time.ctime(), "CLIENT WRONG WITH",  str(id), '-', request.remote_addr)
