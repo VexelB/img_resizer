@@ -7,6 +7,8 @@ export FLASK_APP=serv.py
 
 flask run
 
+
+
 Тест:
 python client_test.py
 
