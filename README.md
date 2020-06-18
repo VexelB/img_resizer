@@ -4,6 +4,7 @@
 
 Запуск:
 export FLASK_APP=serv.py
+
 flask run
 
 Тест:
