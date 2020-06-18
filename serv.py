@@ -46,10 +46,10 @@ def answer(file, r_w, r_h, id):
     r.hset(f"request:{id}","req_height", r_h)
     r.hset(f"request:{id}","status", "in queue")
     yield f"Request id - {id}<br>Check it on /results page"
-    pic_pocessing(file, r_w, r_h, id, filename)
+    pic_processing(file, r_w, r_h, id, filename)
 
 # процес изменения изображения
-def pic_pocessing(file, r_w, r_h, id, filename):
+def pic_processing(file, r_w, r_h, id, filename):
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     r.hset(f"request:{id}","status", "processing")
     img = Image.open('./pictures/'+filename)    
