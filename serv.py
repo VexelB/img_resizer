@@ -118,4 +118,3 @@ def results():
       <input type=submit value=Submit>
     </form>
     """
- 

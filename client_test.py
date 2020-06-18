@@ -7,7 +7,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(response.text, 'No file part', msg = "Wrong file checking")
     def test_size(self):
         response = requests.post('http://127.0.0.1:5000/', data = {'width' : '0', 'height' : '0'}, files = {'file': ('ku.txt', 'ku')})
-        self.assertEqual(response.text, 'Bad size', msg = "Wrong number checking")
+        self.assertEqual(response.text, 'Bad size', msg = "Wrong number in size checking")
     def test_filename(self):
         response = requests.post('http://127.0.0.1:5000/', data = {'width' : '1', 'height' : '1'}, files = {'file': ('ku.txt', 'ku')})
         self.assertEqual(response.text, 'No selected or wrong file', msg = "Wrong extension checking")
