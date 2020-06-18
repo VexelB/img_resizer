@@ -10,21 +10,22 @@ app = Flask(__name__)
 allowed_ext = set(['png', 'jpg'])
 app.config['UPLOAD_FOLDER'] = './pictures'
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
-allowed_size = [str(i) for i in range(1,10000)]
-r = redis.StrictRedis(host = 'localhost', port = 6379, db = 0, decode_responses = True) # подключаемся к бд
+allowed_size = [str(i) for i in range(1, 10000)]
+r = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)  # подключаемся к бд
 headwidth = [25, 18, 6, 24, 9, 5, 6]
 headdata = ['DATE', 'ACTIVITY TYPE', 'REQ ID', 'FILE NAME', 'REQ IP', 'WIDTH', 'HEIGHT']
 # файл для логирования
 try:
     f = open("log.txt", "x")
     for i in range(len(headdata)):
-        f.write(headdata[i]+ ' ' * (headwidth[i] - len(headdata[i])) + ' |')
+        f.write(headdata[i] + ' ' * (headwidth[i] - len(headdata[i])) + ' |')
     f.write('\n')
     f.close()
 except:
     pass
 
-#логгирование
+
+# логгирование
 def logging(*msg):
     f = open('log.txt', "a")
     for i in range(len(msg)):
@@ -32,9 +33,11 @@ def logging(*msg):
     f.write('\n')
     f.close()
 
+
 # проверка на расширение
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_ext
+
 
 # формирование запроса на изменение изображения, добавление информации в бд
 def answer(file, r_w, r_h, id):
@@ -42,21 +45,23 @@ def answer(file, r_w, r_h, id):
     logging(time.ctime(), 'CLIENT UPLOAD', str(id), filename, request.remote_addr, r_w, r_h)
     r.hset(f"request:{id}", "orgn_pic", filename)
     r.hset(f"request:{id}", "req_ip", request.remote_addr)
-    r.hset(f"request:{id}","req_width", r_w)
-    r.hset(f"request:{id}","req_height", r_h)
-    r.hset(f"request:{id}","status", "in queue")
+    r.hset(f"request:{id}", "req_width", r_w)
+    r.hset(f"request:{id}", "req_height", r_h)
+    r.hset(f"request:{id}", "status", "in queue")
     yield f"Request id - {id}<br>Check it on /results page"
     pic_processing(file, r_w, r_h, id, filename)
+
 
 # процес изменения изображения
 def pic_processing(file, r_w, r_h, id, filename):
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    r.hset(f"request:{id}","status", "processing")
-    img = Image.open('./pictures/'+filename)    
-    img = img.resize((r_w,r_h))
+    r.hset(f"request:{id}", "status", "processing")
+    img = Image.open('./pictures/' + filename)
+    img = img.resize((r_w, r_h))
     img.save(f"./results/{filename}")
-    r.hset(f"request:{id}","status", "done")
+    r.hset(f"request:{id}", "status", "done")
     logging(time.ctime(), "DONE", str(id), filename, '-', r_w, r_h)
+
 
 # страница принимающая всю информацию
 @app.route("/", methods=['GET', 'POST'])
@@ -87,6 +92,7 @@ def index():
     </form>
     """
 
+
 # страница отdечающая о готовности
 @app.route("/results/", methods=['GET', 'POST'])
 def results():
@@ -112,3 +118,4 @@ def results():
       <input type=submit value=Submit>
     </form>
     """
+ 
