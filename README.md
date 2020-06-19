@@ -4,6 +4,7 @@
 
 # Запуск:
 redis-server
+redis-cli -> set id 0
 
 export FLASK_APP=serv.py
 
